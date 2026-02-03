@@ -2,8 +2,8 @@
 
 REST API for querying the 8004 Agent Registry on Solana. Compatible with PostgREST/Supabase query format.
 
-> **Self-Hosted**: You can run your own indexer instance.
-> See [8004-solana-indexer](https://github.com/CasterCorp/8004-solana-indexer) for setup instructions.
+> **Self-Hosted**: Run your own indexer instance.
+> See [8004-solana-indexer](https://github.com/QuantuLabs/8004-solana-indexer) for setup instructions.
 
 ## Base URL
 
@@ -17,7 +17,7 @@ REST API for querying the 8004 Agent Registry on Solana. Compatible with PostgRE
 apikey: sb_publishable_i-ycBRGiolBr8GMdiVq1rA_nwt7N2bq
 ```
 
-**Self-Hosted**:
+**Self-Hosted** ([setup guide](https://github.com/QuantuLabs/8004-solana-indexer)):
 ```
 https://your-indexer.example.com/rest/v1
 ```
@@ -126,6 +126,7 @@ curl "https://api.example.com/health"
 
 ## Related
 
-- [8004 Solana Programs](https://github.com/CasterCorp/8004-solana) - On-chain programs
-- [8004 TypeScript SDK](https://www.npmjs.com/package/8004-solana) - Client SDK
+- [8004-solana-indexer](https://github.com/QuantuLabs/8004-solana-indexer) - Self-hosted indexer
+- [8004-solana](https://github.com/QuantuLabs/8004-solana) - On-chain programs (Anchor)
+- [8004-solana SDK](https://www.npmjs.com/package/8004-solana) - TypeScript SDK
 - [ERC-8004 Specification](https://eips.ethereum.org/EIPS/eip-8004) - Standard spec
