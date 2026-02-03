@@ -9,7 +9,12 @@ REST API for querying the 8004 Agent Registry on Solana. Compatible with PostgRE
 
 **Devnet (Public)**:
 ```
-https://YOUR_SUPABASE_PROJECT.supabase.co/rest/v1
+https://uhjytdjxvfbppgjicfly.supabase.co/rest/v1
+```
+
+**API Key** (anon/public - required header):
+```
+apikey: sb_publishable_i-ycBRGiolBr8GMdiVq1rA_nwt7N2bq
 ```
 
 **Self-Hosted**:
@@ -19,7 +24,14 @@ https://your-indexer.example.com/rest/v1
 
 ## Authentication
 
-Public read-only API. No authentication required.
+Public read-only API. Requires `apikey` header for Supabase hosted instance:
+
+```bash
+curl -H "apikey: sb_publishable_i-ycBRGiolBr8GMdiVq1rA_nwt7N2bq" \
+  "https://uhjytdjxvfbppgjicfly.supabase.co/rest/v1/agents"
+```
+
+Self-hosted instances may not require authentication.
 
 ## Rate Limiting
 
@@ -71,24 +83,30 @@ All data has a verification status:
 
 ## Quick Examples
 
+```bash
+# Set API key for all requests
+export SUPABASE_KEY="sb_publishable_i-ycBRGiolBr8GMdiVq1rA_nwt7N2bq"
+export BASE_URL="https://uhjytdjxvfbppgjicfly.supabase.co/rest/v1"
+```
+
 ### Get all agents in a collection
 ```bash
-curl "https://api.example.com/rest/v1/agents?collection=eq.ABC123"
+curl -H "apikey: $SUPABASE_KEY" "$BASE_URL/agents?collection=eq.ABC123"
 ```
 
 ### Get feedbacks for an agent
 ```bash
-curl "https://api.example.com/rest/v1/feedbacks?asset=eq.AgentAssetId123"
+curl -H "apikey: $SUPABASE_KEY" "$BASE_URL/feedbacks?asset=eq.AgentAssetId123"
 ```
 
 ### Get leaderboard (top 10)
 ```bash
-curl "https://api.example.com/rest/v1/leaderboard?limit=10"
+curl -H "apikey: $SUPABASE_KEY" "$BASE_URL/leaderboard?limit=10"
 ```
 
 ### Get only finalized data
 ```bash
-curl "https://api.example.com/rest/v1/agents?status=eq.FINALIZED"
+curl -H "apikey: $SUPABASE_KEY" "$BASE_URL/agents?status=eq.FINALIZED"
 ```
 
 ## PostgREST Query Operators
