@@ -7,12 +7,12 @@ REST API for querying the 8004 Agent Registry on Solana. Compatible with PostgRE
 
 ## Base URL
 
-**Devnet (Public)**:
-```
-https://uhjytdjxvfbppgjicfly.supabase.co/rest/v1
-```
+| Network | URL | Status |
+|---------|-----|--------|
+| **Devnet** | `https://uhjytdjxvfbppgjicfly.supabase.co/rest/v1` | Live |
+| **Mainnet** | *Coming soon* | - |
 
-**API Key** (anon/public - required header):
+**API Key** (anon/public - required header for Supabase):
 ```
 apikey: sb_publishable_i-ycBRGiolBr8GMdiVq1rA_nwt7N2bq
 ```
@@ -84,7 +84,7 @@ All data has a verification status:
 ## Quick Examples
 
 ```bash
-# Set API key for all requests
+# Devnet configuration
 export SUPABASE_KEY="sb_publishable_i-ycBRGiolBr8GMdiVq1rA_nwt7N2bq"
 export BASE_URL="https://uhjytdjxvfbppgjicfly.supabase.co/rest/v1"
 ```
