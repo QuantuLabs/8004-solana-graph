@@ -17,13 +17,13 @@ On GraphQL-only deployments, `/rest/v1/*` returns `410 Gone`.
 For the legacy Supabase-hosted endpoint, include an API key:
 
 ```bash
-apikey: sb_publishable_i-ycBRGiolBr8GMdiVq1rA_nwt7N2bq
+apikey: sb_publishable_...
 ```
 
 Example:
 
 ```bash
-curl -H "apikey: sb_publishable_i-ycBRGiolBr8GMdiVq1rA_nwt7N2bq" \
+curl -H "apikey: sb_publishable_..." \
   "https://uhjytdjxvfbppgjicfly.supabase.co/rest/v1/agents"
 ```
 
@@ -31,19 +31,18 @@ curl -H "apikey: sb_publishable_i-ycBRGiolBr8GMdiVq1rA_nwt7N2bq" \
 
 | Endpoint | Description | Documentation |
 |---|---|---|
-| `/agents` | List registered agents | [docs/agents.md](agents.md) |
-| `/feedbacks` | List feedback events | [docs/feedbacks.md](feedbacks.md) |
-| `/feedback_responses` | List feedback responses | [docs/responses.md](responses.md) |
-| `/responses` | Alias for feedback responses | [docs/responses.md](responses.md) |
-| `/validations` | List validation requests | [docs/validations.md](validations.md) |
-| `/registries` | List sub-registries | [docs/registries.md](registries.md) |
-| `/metadata` | Agent metadata key-value pairs | [docs/metadata.md](metadata.md) |
-| `/leaderboard` | Top agents by trust score | [docs/leaderboard.md](leaderboard.md) |
-| `/stats` and `/global_stats` | Global statistics | [docs/stats.md](stats.md) |
-| `/collection_stats` | Per-collection statistics | [docs/stats.md](stats.md) |
-| `/stats/verification` | Verification status breakdown | [docs/stats.md](stats.md) |
-| `/checkpoints/:asset` | Hash-chain checkpoints | [docs/stats.md](stats.md) |
-| `/events/:asset/replay-data` | Replay/event reconstruction data | [docs/stats.md](stats.md) |
+| `/agents` | List registered agents | [docs/rest-v1/agents.md](rest-v1/agents.md) |
+| `/feedbacks` | List feedback events | [docs/rest-v1/feedbacks.md](rest-v1/feedbacks.md) |
+| `/feedback_responses` | List feedback responses | [docs/rest-v1/responses.md](rest-v1/responses.md) |
+| `/responses` | Alias for feedback responses | [docs/rest-v1/responses.md](rest-v1/responses.md) |
+| `/registries` | List sub-registries | [docs/rest-v1/registries.md](rest-v1/registries.md) |
+| `/metadata` | Agent metadata key-value pairs | [docs/rest-v1/metadata.md](rest-v1/metadata.md) |
+| `/leaderboard` | Top agents by trust score | [docs/rest-v1/leaderboard.md](rest-v1/leaderboard.md) |
+| `/stats` and `/global_stats` | Global statistics | [docs/rest-v1/stats.md](rest-v1/stats.md) |
+| `/collection_stats` | Per-collection statistics | [docs/rest-v1/stats.md](rest-v1/stats.md) |
+| `/stats/verification` | Verification status breakdown | [docs/rest-v1/stats.md](rest-v1/stats.md) |
+| `/checkpoints/:asset` | Hash-chain checkpoints | [docs/rest-v1/stats.md](rest-v1/stats.md) |
+| `/events/:asset/replay-data` | Replay/event reconstruction data | [docs/rest-v1/stats.md](rest-v1/stats.md) |
 
 ## Pagination
 
