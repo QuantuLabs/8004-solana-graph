@@ -41,8 +41,6 @@ Available `Query` operations:
 - `feedbacks(first, skip, after, where, orderBy, orderDirection)`
 - `feedbackResponse(id: ID!)`
 - `feedbackResponses(first, skip, after, where, orderBy, orderDirection)`
-- `validation(id: ID!)`
-- `validations(first, skip, after, where)`
 - `agentMetadatas(first, skip, where)`
 - `agentStats(id: ID!)`
 - `protocol(id: ID!)`
@@ -58,7 +56,6 @@ GraphQL IDs are namespaced with the Solana prefix:
 - Agent: `sol:<asset_pubkey>`
 - Feedback: `sol:<asset>:<client>:<feedback_index>`
 - Response: `sol:<asset>:<client>:<feedback_index>:<responder>:<tx_signature>`
-- Validation: `sol:<asset>:<validator_address>:<nonce>`
 
 ## Quick Start
 
@@ -97,9 +94,51 @@ curl -X POST "https://8004-indexer-production.up.railway.app/v2/graphql" \
   }'
 ```
 
+### Search agents (name, owner, asset pubkey)
+
+```bash
+curl -X POST "https://8004-indexer-production.up.railway.app/v2/graphql" \
+  -H "content-type: application/json" \
+  --data '{
+    "query":"query($q: String!) { agentSearch(query: $q, first: 10) { id owner createdAt solana { trustTier qualityScore } } }",
+    "variables":{"q":"agent"}
+  }'
+```
+
+### Fetch an agent registration file (service endpoints, skills)
+
+```bash
+curl -X POST "https://8004-indexer-production.up.railway.app/v2/graphql" \
+  -H "content-type: application/json" \
+  --data '{
+    "query":"query($id: ID!) { agent(id: $id) { id owner registrationFile { name description image active mcpEndpoint mcpTools a2aEndpoint a2aSkills oasfSkills oasfDomains hasOASF } } }",
+    "variables":{"id":"sol:FmWeWQYzyt6zoANeqXT8DcNiYAom9ioNh9hXxWr6oxjX"}
+  }'
+```
+
+### Global rollups (tags, totals)
+
+```bash
+curl -X POST "https://8004-indexer-production.up.railway.app/v2/graphql" \
+  -H "content-type: application/json" \
+  --data '{
+    "query":"query { protocols { id totalAgents totalFeedback totalValidations tags } }"
+  }'
+```
+
+## Docs (GraphQL v2)
+
+- [Agents](docs/agents.md)
+- [Feedbacks](docs/feedbacks.md)
+- [Responses](docs/responses.md)
+- [Metadata](docs/metadata.md)
+- [Leaderboard](docs/leaderboard.md)
+- [Sub-Registries](docs/registries.md)
+- [Stats](docs/stats.md)
+
 ## Cursor Pagination
 
-- `after` cursor is supported on `agents`, `feedbacks`, `feedbackResponses`, `validations`
+- `after` cursor is supported on `agents`, `feedbacks`, `feedbackResponses`
 - Cursor pagination is only valid with `orderBy: createdAt`
 - Do not combine `after` and `skip` in the same query
 
