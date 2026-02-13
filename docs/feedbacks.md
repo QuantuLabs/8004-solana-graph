@@ -4,7 +4,7 @@ List feedback events (client reviews of agents).
 
 ## Endpoint
 
-```
+```http
 POST /v2/graphql
 ```
 
@@ -48,6 +48,34 @@ curl -sS "$GRAPHQL_URL" \
   }'
 ```
 
+Response (example):
+
+```json
+{
+  "data": {
+    "feedbacks": [
+      {
+        "id": "sol:ASSET_PUBKEY:CLIENT_WALLET:0",
+        "clientAddress": "CLIENT_WALLET",
+        "feedbackIndex": "0",
+        "value": "95.00",
+        "isRevoked": false,
+        "createdAt": "1700000000",
+        "solana": {
+          "score": 85,
+          "valueRaw": "9500",
+          "valueDecimals": 2,
+          "txSignature": "TX_SIGNATURE",
+          "blockSlot": "123456",
+          "runningDigest": "0x...",
+          "verificationStatus": "FINALIZED"
+        }
+      }
+    ]
+  }
+}
+```
+
 ### Feedbacks by endpoint
 
 ```bash
@@ -57,6 +85,25 @@ curl -sS "$GRAPHQL_URL" \
     "query":"query($endpoint: String!) { feedbacks(first: 20, where: { endpoint: $endpoint }, orderBy: createdAt, orderDirection: desc) { id agent { id } clientAddress tag1 tag2 createdAt } }",
     "variables": { "endpoint": "https://example.com/api" }
   }'
+```
+
+Response (example):
+
+```json
+{
+  "data": {
+    "feedbacks": [
+      {
+        "id": "sol:ASSET_PUBKEY:CLIENT_WALLET:0",
+        "agent": { "id": "sol:ASSET_PUBKEY" },
+        "clientAddress": "CLIENT_WALLET",
+        "tag1": "tag_a",
+        "tag2": "tag_b",
+        "createdAt": "1700000000"
+      }
+    ]
+  }
+}
 ```
 
 ### Get one feedback (and first page of responses)
@@ -70,3 +117,30 @@ curl -sS "$GRAPHQL_URL" \
   }'
 ```
 
+Response (example):
+
+```json
+{
+  "data": {
+    "feedback": {
+      "id": "sol:ASSET_PUBKEY:CLIENT_WALLET:0",
+      "agent": { "id": "sol:ASSET_PUBKEY" },
+      "clientAddress": "CLIENT_WALLET",
+      "feedbackIndex": "0",
+      "value": "95.00",
+      "tag1": "tag_a",
+      "tag2": "tag_b",
+      "endpoint": "https://example.com/api",
+      "feedbackURI": "ipfs://bafy...",
+      "feedbackHash": "0x...",
+      "isRevoked": false,
+      "createdAt": "1700000000",
+      "revokedAt": null,
+      "responses": [
+        { "id": "sol:ASSET_PUBKEY:CLIENT_WALLET:0:RESPONDER_WALLET:TX", "responder": "RESPONDER_WALLET", "responseUri": "ipfs://bafy...", "createdAt": "1700000001" }
+      ],
+      "solana": { "score": 85, "txSignature": "TX_SIGNATURE", "blockSlot": "123456", "runningDigest": "0x..." }
+    }
+  }
+}
+```

@@ -10,7 +10,7 @@ Default public API is **GraphQL**.
 
 ## Architecture
 
-The 8004 Agent Registry uses a sharded model: one global logical registry backed by multiple on-chain collections (base + user collections) under the same Solana program.
+The 8004 Agent Registry is indexed as a set of Metaplex Core assets under the same Solana program.
 
 ## Base URLs
 
@@ -65,12 +65,24 @@ GraphQL IDs are namespaced with the Solana prefix:
 curl "https://8004-indexer-production.up.railway.app/health"
 ```
 
+Response (example):
+
+```json
+{ "status": "ok" }
+```
+
 ### Basic GraphQL query
 
 ```bash
 curl -X POST "https://8004-indexer-production.up.railway.app/v2/graphql" \
   -H "content-type: application/json" \
   --data '{"query":"{ __typename }"}'
+```
+
+Response (example):
+
+```json
+{ "data": { "__typename": "Query" } }
 ```
 
 ### List agents
@@ -81,6 +93,18 @@ curl -X POST "https://8004-indexer-production.up.railway.app/v2/graphql" \
   --data '{
     "query":"query { agents(first: 5, orderBy: createdAt, orderDirection: desc) { id owner totalFeedback } }"
   }'
+```
+
+Response (example):
+
+```json
+{
+  "data": {
+    "agents": [
+      { "id": "sol:ASSET_PUBKEY", "owner": "OWNER_WALLET", "totalFeedback": "12" }
+    ]
+  }
+}
 ```
 
 ### Filter feedbacks for one agent
@@ -94,6 +118,18 @@ curl -X POST "https://8004-indexer-production.up.railway.app/v2/graphql" \
   }'
 ```
 
+Response (example):
+
+```json
+{
+  "data": {
+    "feedbacks": [
+      { "id": "sol:ASSET_PUBKEY:CLIENT_WALLET:0", "clientAddress": "CLIENT_WALLET", "isRevoked": false }
+    ]
+  }
+}
+```
+
 ### Search agents (name, owner, asset pubkey)
 
 ```bash
@@ -103,6 +139,18 @@ curl -X POST "https://8004-indexer-production.up.railway.app/v2/graphql" \
     "query":"query($q: String!) { agentSearch(query: $q, first: 10) { id owner createdAt solana { trustTier qualityScore } } }",
     "variables":{"q":"agent"}
   }'
+```
+
+Response (example):
+
+```json
+{
+  "data": {
+    "agentSearch": [
+      { "id": "sol:ASSET_PUBKEY", "owner": "OWNER_WALLET", "createdAt": "1700000000", "solana": { "trustTier": 2, "qualityScore": 8400 } }
+    ]
+  }
+}
 ```
 
 ### Fetch an agent registration file (service endpoints, skills)
@@ -116,6 +164,32 @@ curl -X POST "https://8004-indexer-production.up.railway.app/v2/graphql" \
   }'
 ```
 
+Response (example):
+
+```json
+{
+  "data": {
+    "agent": {
+      "id": "sol:ASSET_PUBKEY",
+      "owner": "OWNER_WALLET",
+      "registrationFile": {
+        "name": "My Agent",
+        "description": "Short description",
+        "image": "ipfs://bafy...",
+        "active": true,
+        "mcpEndpoint": "https://example.com/mcp",
+        "mcpTools": ["tool_a", "tool_b"],
+        "a2aEndpoint": "https://example.com/a2a",
+        "a2aSkills": ["skill_a", "skill_b"],
+        "oasfSkills": ["skill_a", "skill_b"],
+        "oasfDomains": ["domain_a", "domain_b"],
+        "hasOASF": true
+      }
+    }
+  }
+}
+```
+
 ### Global rollups (tags, totals)
 
 ```bash
@@ -126,6 +200,18 @@ curl -X POST "https://8004-indexer-production.up.railway.app/v2/graphql" \
   }'
 ```
 
+Response (example):
+
+```json
+{
+  "data": {
+    "protocols": [
+      { "id": "solana-devnet", "totalAgents": "136", "totalFeedback": "420", "totalValidations": "0", "tags": ["tag_a", "tag_b"] }
+    ]
+  }
+}
+```
+
 ## Docs (GraphQL v2)
 
 - [Agents](docs/agents.md)
@@ -133,7 +219,7 @@ curl -X POST "https://8004-indexer-production.up.railway.app/v2/graphql" \
 - [Responses](docs/responses.md)
 - [Metadata](docs/metadata.md)
 - [Leaderboard](docs/leaderboard.md)
-- [Sub-Registries](docs/registries.md)
+- [Collections](docs/collections.md)
 - [Stats](docs/stats.md)
 
 ## Cursor Pagination

@@ -6,7 +6,7 @@ If you need the legacy deterministic `sort_key` ranking, refer to the legacy RES
 
 ## Endpoint
 
-```
+```http
 POST /v2/graphql
 ```
 
@@ -28,6 +28,29 @@ curl -sS "$GRAPHQL_URL" \
   }'
 ```
 
+Response (example):
+
+```json
+{
+  "data": {
+    "agents": [
+      {
+        "id": "sol:ASSET_PUBKEY",
+        "owner": "OWNER_WALLET",
+        "totalFeedback": "12",
+        "solana": {
+          "trustTier": 2,
+          "qualityScore": 8400,
+          "confidence": 9100,
+          "riskScore": 15,
+          "diversityRatio": 40
+        }
+      }
+    ]
+  }
+}
+```
+
 ### Top agents by total feedback (activity leaderboard)
 
 ```bash
@@ -38,7 +61,26 @@ curl -sS "$GRAPHQL_URL" \
   }'
 ```
 
-### Top agents in one collection
+Response (example):
+
+```json
+{
+  "data": {
+    "agents": [
+      {
+        "id": "sol:ASSET_PUBKEY",
+        "owner": "OWNER_WALLET",
+        "totalFeedback": "42",
+        "solana": { "trustTier": 3, "qualityScore": 9100 }
+      }
+    ]
+  }
+}
+```
+
+### Top agents filtered by collection (optional)
+
+Most deployments use a single collection for agents, so this filter is rarely needed.
 
 ```bash
 curl -sS "$GRAPHQL_URL" \
@@ -47,4 +89,21 @@ curl -sS "$GRAPHQL_URL" \
     "query":"query($collection: String!) { agents(first: 20, where: { collection: $collection }, orderBy: qualityScore, orderDirection: desc) { id owner totalFeedback solana { collection trustTier qualityScore } } }",
     "variables": { "collection": "COLLECTION_PUBKEY" }
   }'
+```
+
+Response (example):
+
+```json
+{
+  "data": {
+    "agents": [
+      {
+        "id": "sol:ASSET_PUBKEY",
+        "owner": "OWNER_WALLET",
+        "totalFeedback": "12",
+        "solana": { "collection": "COLLECTION_PUBKEY", "trustTier": 2, "qualityScore": 8400 }
+      }
+    ]
+  }
+}
 ```

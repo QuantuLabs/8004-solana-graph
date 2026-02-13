@@ -2,6 +2,8 @@
 
 Global and collection-level statistics.
 
+Note: the current 8004 program uses a single agent collection per network. Collection-level breakdowns are mostly informational / historical.
+
 ## Endpoints
 
 | Endpoint | Description |
@@ -14,7 +16,7 @@ Global and collection-level statistics.
 
 ## Global Stats
 
-```
+```http
 GET /rest/v1/global_stats
 ```
 
@@ -23,7 +25,7 @@ GET /rest/v1/global_stats
 ```typescript
 interface GlobalStats {
   total_agents: number;      // Total registered agents
-  total_collections: number; // Total registries
+  total_collections: number; // Distinct collections seen in indexed data (usually 1)
   total_feedbacks: number;   // Total non-revoked feedbacks
   total_validations: number; // Total validation requests
   platinum_agents: number;   // Agents with trust_tier = 4
@@ -58,7 +60,7 @@ curl -H "apikey: $SUPABASE_KEY" "$BASE_URL/global_stats"
 
 ## Collection Stats
 
-```
+```http
 GET /rest/v1/collection_stats
 ```
 
@@ -74,8 +76,6 @@ GET /rest/v1/collection_stats
 ```typescript
 interface CollectionStats {
   collection: string;        // Collection pubkey
-  registry_type: string;     // "BASE" or "USER"
-  authority: string | null;  // Registry authority
   agent_count: number;       // Agents in collection
   top_agents: number;        // Agents with trust_tier >= 3 (Gold+)
   avg_quality: number | null; // Average quality_score (agents with feedbacks)
@@ -100,19 +100,9 @@ curl -H "apikey: $SUPABASE_KEY" "$BASE_URL/collection_stats?collection=eq.Collec
 [
   {
     "collection": "9KmLpQwR5tYz...",
-    "registry_type": "BASE",
-    "authority": "5FHwkrdxntdK4N6Z4gXQ...",
     "agent_count": 8542,
     "top_agents": 312,
     "avg_quality": 7850
-  },
-  {
-    "collection": "7YmP3kL2nQwR...",
-    "registry_type": "USER",
-    "authority": "4EGvjrcxmtdH5M5Y3fPR...",
-    "agent_count": 1205,
-    "top_agents": 45,
-    "avg_quality": 8230
   }
 ]
 ```
@@ -121,7 +111,7 @@ curl -H "apikey: $SUPABASE_KEY" "$BASE_URL/collection_stats?collection=eq.Collec
 
 ## Verification Stats
 
-```
+```http
 GET /rest/v1/verification_stats
 ```
 
@@ -141,7 +131,6 @@ interface VerificationStatsRow {
 ### Models Tracked
 
 - `agents`
-- `collections`
 - `feedbacks`
 - `feedback_responses`
 - `validations`
@@ -162,12 +151,6 @@ curl -H "apikey: $SUPABASE_KEY" "$BASE_URL/verification_stats"
     "pending_count": 42,
     "finalized_count": 12505,
     "orphaned_count": 3
-  },
-  {
-    "model": "collections",
-    "pending_count": 0,
-    "finalized_count": 89,
-    "orphaned_count": 0
   },
   {
     "model": "feedbacks",

@@ -4,7 +4,7 @@ List feedback responses (agent/owner replies to client feedback).
 
 ## Endpoint
 
-```
+```http
 POST /v2/graphql
 ```
 
@@ -45,6 +45,30 @@ curl -sS "$GRAPHQL_URL" \
   }'
 ```
 
+Response (example):
+
+```json
+{
+  "data": {
+    "feedbackResponses": [
+      {
+        "id": "sol:ASSET_PUBKEY:CLIENT_WALLET:0:RESPONDER_WALLET:TX_SIGNATURE",
+        "responder": "RESPONDER_WALLET",
+        "responseUri": "ipfs://bafy...",
+        "responseHash": "0x...",
+        "createdAt": "1700000001",
+        "solana": {
+          "txSignature": "TX_SIGNATURE",
+          "blockSlot": "123457",
+          "runningDigest": "0x...",
+          "verificationStatus": "FINALIZED"
+        }
+      }
+    ]
+  }
+}
+```
+
 ### Get one response by ID
 
 ```bash
@@ -56,3 +80,19 @@ curl -sS "$GRAPHQL_URL" \
   }'
 ```
 
+Response (example):
+
+```json
+{
+  "data": {
+    "feedbackResponse": {
+      "id": "sol:ASSET_PUBKEY:CLIENT_WALLET:0:RESPONDER_WALLET:TX_SIGNATURE",
+      "feedback": { "id": "sol:ASSET_PUBKEY:CLIENT_WALLET:0" },
+      "responder": "RESPONDER_WALLET",
+      "responseUri": "ipfs://bafy...",
+      "responseHash": "0x...",
+      "createdAt": "1700000001"
+    }
+  }
+}
+```

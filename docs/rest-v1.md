@@ -35,7 +35,6 @@ curl -H "apikey: sb_publishable_..." \
 | `/feedbacks` | List feedback events | [docs/rest-v1/feedbacks.md](rest-v1/feedbacks.md) |
 | `/feedback_responses` | List feedback responses | [docs/rest-v1/responses.md](rest-v1/responses.md) |
 | `/responses` | Alias for feedback responses | [docs/rest-v1/responses.md](rest-v1/responses.md) |
-| `/registries` | List sub-registries | [docs/rest-v1/registries.md](rest-v1/registries.md) |
 | `/metadata` | Agent metadata key-value pairs | [docs/rest-v1/metadata.md](rest-v1/metadata.md) |
 | `/leaderboard` | Top agents by trust score | [docs/rest-v1/leaderboard.md](rest-v1/leaderboard.md) |
 | `/stats` and `/global_stats` | Global statistics | [docs/rest-v1/stats.md](rest-v1/stats.md) |

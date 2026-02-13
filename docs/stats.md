@@ -4,7 +4,7 @@ Global and per-agent statistics.
 
 ## Endpoint
 
-```
+```http
 POST /v2/graphql
 ```
 
@@ -32,6 +32,24 @@ curl -sS "$GRAPHQL_URL" \
   }'
 ```
 
+Response (example):
+
+```json
+{
+  "data": {
+    "protocols": [
+      {
+        "id": "solana-devnet",
+        "totalAgents": "136",
+        "totalFeedback": "420",
+        "totalValidations": "0",
+        "tags": ["tag_a", "tag_b"]
+      }
+    ]
+  }
+}
+```
+
 ### Global stats (explicit ID)
 
 ```bash
@@ -41,6 +59,23 @@ curl -sS "$GRAPHQL_URL" \
     "query":"query($id: ID!) { globalStats(id: $id) { id totalAgents totalFeedback totalValidations totalProtocols tags } }",
     "variables": { "id": "solana-devnet" }
   }'
+```
+
+Response (example):
+
+```json
+{
+  "data": {
+    "globalStats": {
+      "id": "solana-devnet",
+      "totalAgents": "136",
+      "totalFeedback": "420",
+      "totalValidations": "0",
+      "totalProtocols": "1",
+      "tags": ["tag_a", "tag_b"]
+    }
+  }
+}
 ```
 
 ### Per-agent stats
@@ -54,3 +89,20 @@ curl -sS "$GRAPHQL_URL" \
   }'
 ```
 
+Response (example):
+
+```json
+{
+  "data": {
+    "agentStats": {
+      "id": "sol:ASSET_PUBKEY",
+      "totalFeedback": "12",
+      "averageFeedbackValue": "95.00",
+      "totalValidations": "0",
+      "completedValidations": "0",
+      "averageValidationScore": null,
+      "lastActivity": "1700000000"
+    }
+  }
+}
+```

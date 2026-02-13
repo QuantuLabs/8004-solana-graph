@@ -6,7 +6,7 @@ Metadata values are decoded server-side when possible.
 
 ## Endpoint
 
-```
+```http
 POST /v2/graphql
 ```
 
@@ -41,6 +41,22 @@ curl -sS "$GRAPHQL_URL" \
   }'
 ```
 
+Response (example):
+
+```json
+{
+  "data": {
+    "agent": {
+      "id": "sol:ASSET_PUBKEY",
+      "metadata": [
+        { "key": "website", "value": "https://example.com", "updatedAt": "1700000000" },
+        { "key": "twitter", "value": "https://x.com/example", "updatedAt": "1700000000" }
+      ]
+    }
+  }
+}
+```
+
 ### One metadata key for one agent (via agentMetadatas)
 
 ```bash
@@ -52,3 +68,14 @@ curl -sS "$GRAPHQL_URL" \
   }'
 ```
 
+Response (example):
+
+```json
+{
+  "data": {
+    "agentMetadatas": [
+      { "key": "website", "value": "https://example.com", "updatedAt": "1700000000" }
+    ]
+  }
+}
+```
