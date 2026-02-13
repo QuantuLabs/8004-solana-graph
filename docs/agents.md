@@ -28,7 +28,7 @@ Notes:
 ## Queries
 
 - `agent(id: ID!): Agent`
-- `agents(first, skip, where, orderBy, orderDirection): [Agent!]!`
+- `agents(first, skip, after, where, orderBy, orderDirection): [Agent!]!`
 
 ## Pagination
 
@@ -42,10 +42,7 @@ Rules:
 - Do not combine `skip` and `after`.
 - `after` is only supported with `orderBy: createdAt`.
 
-`after` cursor format (agents):
-
-- Base64 of JSON: `{"created_at":"<ISO timestamp>","asset":"<asset_pubkey>"}`
-- The cursor `asset` is the raw pubkey (`solana.assetPubkey`), not the GraphQL `Agent.id` (`sol:<asset_pubkey>`).
+The API returns an opaque `Agent.cursor`. To fetch the next page, pass the last row cursor back as `after`.
 
 ## Filters
 
@@ -184,46 +181,35 @@ Response (example):
 
 ### List agents (cursor pagination with `after`)
 
-Step 1: query the first page (note we include `createdAt` and `solana.assetPubkey`):
+Step 1: query the first page (request the `cursor` field):
 
 ```bash
 curl -sS "$GRAPHQL_URL" \
   -H "content-type: application/json" \
   --data '{
-    "query":"query { agents(first: 3, orderBy: createdAt, orderDirection: desc) { id createdAt solana { assetPubkey } } }"
+    "query":"query { agents(first: 3, orderBy: createdAt, orderDirection: desc) { id cursor createdAt } }"
   }'
 ```
 
-Step 2: build `after` from the **last** row of the previous page:
-
-```bash
-AFTER="$(
-  python3 - <<'PY'
-import base64, json
-from datetime import datetime
-
-# Replace with the LAST agent returned by the previous query:
-# - created_at_unix = agents[-1].createdAt (unix seconds)
-# - asset = agents[-1].solana.assetPubkey (raw pubkey, NOT the GraphQL id)
-created_at_unix = 1700000000
-asset = "ASSET_PUBKEY"
-
-created_at_iso = datetime.utcfromtimestamp(created_at_unix).isoformat(timespec="seconds") + "Z"
-print(base64.b64encode(json.dumps({"created_at": created_at_iso, "asset": asset}).encode()).decode())
-PY
-)"
-echo "$AFTER"
-```
-
-Step 3: query the next page:
+Step 2: query the next page by passing `after` as the last cursor from step 1:
 
 ```bash
 curl -sS "$GRAPHQL_URL" \
   -H "content-type: application/json" \
-  --data "{
-    \"query\":\"query($after: String!) { agents(first: 3, after: $after, orderBy: createdAt, orderDirection: desc) { id createdAt solana { assetPubkey } } }\",
-    \"variables\": { \"after\": \"$AFTER\" }
-  }"
+  --data '{
+    "query":"query($after: String!) { agents(first: 3, after: $after, orderBy: createdAt, orderDirection: desc) { id cursor createdAt } }",
+    "variables": { "after": "PASTE_CURSOR_HERE" }
+  }'
+```
+
+### List oldest (first registered) agents
+
+```bash
+curl -sS "$GRAPHQL_URL" \
+  -H "content-type: application/json" \
+  --data '{
+    "query":"query { agents(first: 10, orderBy: createdAt, orderDirection: asc) { id owner createdAt } }"
+  }'
 ```
 
 ### Agents by owner

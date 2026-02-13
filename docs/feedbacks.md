@@ -22,7 +22,7 @@ GRAPHQL_URL="https://8004-indexer-production.up.railway.app/v2/graphql"
 ## Queries
 
 - `feedback(id: ID!): Feedback`
-- `feedbacks(first, skip, where, orderBy, orderDirection): [Feedback!]!`
+- `feedbacks(first, skip, after, where, orderBy, orderDirection): [Feedback!]!`
 
 ## Filters
 

@@ -224,9 +224,10 @@ Response (example):
 
 ## Cursor Pagination
 
-- `after` cursor is supported on `agents`, `feedbacks`, `feedbackResponses`
+- `after` cursor is supported on `agents`, `feedbacks`, `feedbackResponses`, `validations`
 - Cursor pagination is only valid with `orderBy: createdAt`
 - Do not combine `after` and `skip` in the same query
+- Request the `cursor` field in list queries, and pass it back as `after` to fetch the next page
 
 ## Legacy REST v1
 
