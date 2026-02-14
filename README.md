@@ -48,6 +48,9 @@ Available `Query` operations:
 - `globalStats(id: ID!)`
 - `agentSearch(query, first)`
 - `agentRegistrationFiles(first, skip, where)`
+- `hashChainHeads(agent: ID!)`
+- `hashChainLatestCheckpoints(agent: ID!)`
+- `hashChainReplayData(agent, chainType, fromCount, toCount, first)`
 
 ## ID Formats
 
@@ -221,6 +224,7 @@ Response (example):
 - [Leaderboard](docs/leaderboard.md)
 - [Collections](docs/collections.md)
 - [Stats](docs/stats.md)
+- [Integrity / Hash-Chain](docs/integrity.md)
 
 ## Cursor Pagination
 
